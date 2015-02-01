@@ -1,0 +1,39 @@
+{
+  "name": "Framework7-Keypad",
+  "version": "1.0.0",
+  "description": "Keypad plugin extends Framework7 with additional custom keyboards",
+  "main": "dist/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nolimits4web/Framework7-Keypad.git"
+  },
+  "keywords": ["mobile", "framework", "ios 7", "ios7", "ios8", "ios 8", "iphone", "ipad", "apple", "phonegap", "native", "touch", "appstore", "app", "f7"],
+  "author": "Vladimir Kharlampidi",
+  "license": [
+    "MIT"
+  ],
+  "bugs": {
+    "url": "https://github.com/nolimits4web/Framework7-Keypad/issues"
+  },
+  "homepage": "http://www.idangero.us/framework7/plugins/",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "jshint": "~2.6.0",
+    "gulp": "~3.8.10",
+    "gulp-less": "~2.0.1",
+    "gulp-connect": "~2.2.0",
+    "gulp-open": "~0.3.2",
+    "gulp-uglify": "~1.1.0",
+    "gulp-minify-css": "0.4.3",
+    "gulp-watch": "~4.1.0",
+    "gulp-jshint": "~1.9.0",
+    "gulp-rename": "~1.2.0",
+    "gulp-header": "~1.2.2",
+    "jshint-stylish": "~0.1.5"
+  },
+  "scripts": {
+    "test": "gulp build"
+  }
+}
