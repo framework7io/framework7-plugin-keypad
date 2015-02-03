@@ -7,9 +7,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Framework7 Keypad</title>
     <link rel="stylesheet" href="bower_components/framework7/dist/css/framework7.css">
-    <link rel="stylesheet" href="bower_components/framework7/dist/css/framework7.css/framework7.themes.css">
+    <link rel="stylesheet" href="bower_components/framework7/dist/css/framework7.themes.css">
     <link rel="stylesheet" href="../dist/framework7.keypad.css">
     <style>
+      .content-block.passcode-input {
+        position: relative;
+        z-index: 5;
+      }
       .content-block.passcode-numpad {
         position: absolute;
         left: 0;
@@ -17,6 +21,7 @@
         right: 0;
         margin-bottom: 0;
         max-width: none;
+        z-index: 10;
       }
       #demo-numpad-inline {
         -webkit-appearance: none;
@@ -146,7 +151,7 @@
       var numpadLimited = myApp.keypad({
         input: '#demo-numpad-limited',
         valueMaxLength: 2,
-        numpadDot: false
+        dotButton: false
       });
       var calculator = myApp.keypad({
         input: '#demo-calculator',
