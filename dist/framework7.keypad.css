@@ -10,7 +10,7 @@
  * 
  * Licensed under MIT
  * 
- * Released on: February 1, 2015
+ * Released on: February 4, 2015
  */
 .picker-keypad.picker-modal-inline {
   height: 200px;
@@ -145,9 +145,12 @@ html:not(.watch-active-state) .picker-keypad-button:not(.picker-keypad-dummy-but
 .picker-keypad-button.picker-keypad-button-dark {
   background: #bcc0c5;
 }
-html:not(.watch-active-state) .picker-keypad-button.picker-keypad-button-dark:active,
-.picker-keypad-button.picker-keypad-button-dark.active-state {
+html:not(.watch-active-state) .picker-keypad-button.picker-keypad-button-dark:not(.picker-keypad-dummy-button):active,
+.picker-keypad-button.picker-keypad-button-dark:not(.picker-keypad-dummy-button).active-state {
   background: #fcfcfd;
+}
+.picker-keypad-button.picker-keypad-dummy-button {
+  cursor: default;
 }
 .picker-keypad-type-numpad .picker-keypad-button:nth-child(3n):after {
   display: none;
