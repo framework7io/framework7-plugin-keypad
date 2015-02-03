@@ -57,12 +57,18 @@ i.icon-keypad-delete {
             background: #bcc0c5;
         }
     }
+        
 
     &.picker-keypad-button-dark {
         background: #bcc0c5;
-        html:not(.watch-active-state) &:active, &.active-state {
-            background: #fcfcfd;
+        &:not(.picker-keypad-dummy-button) {
+            html:not(.watch-active-state) &:active, &.active-state {
+                background: #fcfcfd;
+            }
         }
+    }
+    &.picker-keypad-dummy-button {
+        cursor: default;
     }
 
     .picker-keypad-type-numpad &{

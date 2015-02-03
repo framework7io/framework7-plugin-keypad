@@ -57,7 +57,7 @@ Framework7.prototype.plugins.keypad = function (app) {
                             html: dotButton ? '<span class="picker-keypad-button-number">' + dotCharacter + '</span>' : '',
                             value: dotButton ? dotCharacter : undefined,
                             dark: true,
-                            cssClass: dotButton ? 'picker-keypad-dummy-button' : ''
+                            cssClass: dotButton ? '' : 'picker-keypad-dummy-button'
                         },
                         {
                             html: '<span class="picker-keypad-button-number">0</span>',
