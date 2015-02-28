@@ -104,12 +104,12 @@ Let's look on list of all available parameters:
         Toolbar HTML Template. By default it is HTML string with following template:
         <pre><code>
 &lt;div class="toolbar"&gt;
-    &lt;div class="toolbar-inner"&gt;
-        &lt;div class="left"&gt;&lt;/div&gt;
-        &lt;div class="right"&gt;
-            &lt;a href="#" class="link close-picker"&gt;{{closeText}}&lt;/a&gt;
-        &lt;/div&gt;
+  &lt;div class="toolbar-inner"&gt;
+    &lt;div class="left"&gt;&lt;/div&gt;
+    &lt;div class="right"&gt;
+      &lt;a href="#" class="link close-picker"&gt;{{closeText}}&lt;/a&gt;
     &lt;/div&gt;
+  &lt;/div&gt;
 &lt;/div&gt;
 
         </code></pre>
