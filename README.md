@@ -107,7 +107,9 @@ Let's look on list of all available parameters:
   &lt;div class="toolbar-inner"&gt;
     &lt;div class="left"&gt;&lt;/div&gt;
     &lt;div class="right"&gt;
-      &lt;a href="#" class="link close-picker"&gt;{{closeText}}&lt;/a&gt;
+      &lt;a href="#" class="link close-picker"&gt;
+        {{closeText}}
+      &lt;/a&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
