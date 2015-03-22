@@ -79,6 +79,14 @@ Let's look on list of all available parameters:
       </td>
     </tr>
     <tr>
+      <td>onlyOnPopover</td>
+      <td>boolean</td>
+      <td>false</td>
+      <td>
+        Enable it and Keypad will be always opened in Popover
+      </td>
+    </tr>
+    <tr>
       <td>cssClass</td>
       <td>string</td>
       <td></td>

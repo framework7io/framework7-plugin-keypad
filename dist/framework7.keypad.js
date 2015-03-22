@@ -1,5 +1,5 @@
 /**
- * Framework7 Keypad 1.0.0
+ * Framework7 Keypad 1.0.1
  * Keypad plugin extends Framework7 with additional custom keyboards
  * 
  * http://www.idangero.us/framework7/plugins/
@@ -10,7 +10,7 @@
  * 
  * Licensed under MIT
  * 
- * Released on: February 4, 2015
+ * Released on: March 22, 2015
  */
 Framework7.prototype.plugins.keypad = function (app) {
     'use strict';
@@ -184,6 +184,7 @@ Framework7.prototype.plugins.keypad = function (app) {
             scrollToInput: true,
             inputReadOnly: true,
             convertToPopover: true,
+            onlyInPopover: false,
             toolbar: true,
             toolbarCloseText: 'Done',
             toolbarTemplate: 
@@ -215,13 +216,16 @@ Framework7.prototype.plugins.keypad = function (app) {
         // Should be converted to popover
         function isPopover() {
             var toPopover = false;
-            if (!p.params.convertToPopover) return toPopover;
+            if (!p.params.convertToPopover && !p.params.onlyInPopover) return toPopover;
             if (!p.inline && p.params.input) {
-                if (app.device.ios) {
-                    toPopover = app.device.ipad ? true : false;
-                }
+                if (p.params.onlyInPopover) toPopover = true;
                 else {
-                    if ($(window).width() >= 768) toPopover = true;
+                    if (app.device.ios) {
+                        toPopover = app.device.ipad ? true : false;
+                    }
+                    else {
+                        if ($(window).width() >= 768) toPopover = true;
+                    }
                 }
             } 
             return toPopover; 

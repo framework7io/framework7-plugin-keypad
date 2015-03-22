@@ -5,7 +5,7 @@
     "url": "https://github.com/nolimits4web/Framework7-Numpad.git"
   },
   "description": "Keypad plugin extends Framework7 with additional custom keyboards",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Vladimir Kharlampidi",
   "homepage": "http://www.idangero.us/framework7/plugins/",
   "keywords": ["mobile", "framework", "ios 7", "ios7", "ios8", "ios 8", "iphone", "ipad", "apple", "phonegap", "native", "touch", "appstore", "app", "f7", "keypad", "numpad", "calculator"],
