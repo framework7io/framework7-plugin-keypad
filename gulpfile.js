@@ -80,7 +80,10 @@
 
         gulp.src(paths.build + plugin.filename + '.css')
             .pipe(gulp.dest(paths.dist))
-            .pipe(minifyCSS())
+            .pipe(minifyCSS({
+                advanced: false,
+                aggressiveMerging: false,
+            }))
             .pipe(header(plugin.banner, { pkg : plugin.pkg, date: plugin.date }))
             .pipe(rename(function(path) {
                 path.basename = plugin.filename + '.min';
