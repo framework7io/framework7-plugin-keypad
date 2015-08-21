@@ -4,7 +4,7 @@
  * 
  * http://www.idangero.us/framework7/plugins/
  * 
- * Copyright 2010-2015, Vladimir Kharlampidi
+ * Copyright 2015, Vladimir Kharlampidi
  * The iDangero.us
  * http://www.idangero.us/
  * 
