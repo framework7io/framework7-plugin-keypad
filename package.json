@@ -1,6 +1,6 @@
 {
   "name": "Framework7-Keypad",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Keypad plugin extends Framework7 with additional custom keyboards",
   "main": "dist/",
   "repository": {
