@@ -305,3 +305,8 @@ If you initialize Keypad as inline Keypad or using automatic initialization, it 
 ```js
 var myKeypad = $$('.keypad-inline')[0].f7Keypad;
 ```
+## Bower
+
+```bash
+$ bower install framework7-keypad 
+```
