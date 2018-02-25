@@ -2,3 +2,9 @@
 node_modules
 build
 demo/framework7
+src
+scripts
+.json
+gulpfile.js
+.md
+LICENSE

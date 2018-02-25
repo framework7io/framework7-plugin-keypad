@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Framework7 Keypad</title>
+  <link rel="stylesheet" href="framework7/css/framework7.min.css">
+  <link rel="stylesheet" href="dist/framework7.keypad.min.css">
+  <style>
+    .block.passcode-input {
+      position: relative;
+      z-index: 5;
+    }
+    .block.passcode-numpad {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin-bottom: 0;
+      max-width: none;
+      z-index: 10;
+    }
+    #demo-numpad-inline {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -ms-appearance: none;
+      appearance: none;
+      .border-box();
+      border: none;
+      background: none;
+      border-radius: 0 0 0 0;
+      .box-shadow(none);
+      display: block;
+      padding: 0 0 0 5px;
+      margin: 0;
+      width: 100%;
+      height: 43px;
+      color: #000;
+      font-size: 17px;
+      font-family: inherit;
+      letter-spacing: 5px;
+      text-align: center;
+      font-size: 25px;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="statusbar"></div>
+    <div class="view view-main view-init">
+      <div data-page="index" class="page">
+        <div class="navbar">
+          <div class="navbar-inner sliding">
+            <div class="title">Framework7 Keypad</div>
+          </div>
+        </div>
+        <div class="page-content">
+          <div class="block block-strong">
+            <p>Keypad plugin extends Framework7 with additional custom keyboards. By default it comes with predefined <b>Numpad</b> and <b>Calculator</b> keyboards, but it also can be used to create custom keyboards with custom buttons.</p>
+          </div>
+          <div class="block-title">Numpad</div>
+          <div class="list no-hairlines-md">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" placeholder="Enter number" readonly="readonly" id="demo-numpad"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="block-title">Limited Value Length</div>
+          <div class="list no-hairlines-md">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" placeholder="Enter your age" readonly="readonly" id="demo-numpad-limited"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="block-title">Calculator</div>
+          <div class="list no-hairlines-md">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" placeholder="Enter number" readonly="readonly" id="demo-calculator"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="block-title">Mode demos</div>
+          <div class="list">
+            <ul>
+              <li>
+                <a href="/passcode/" class="item-link item-content">
+                  <div class="item-inner">
+                    <div class="item-title">Inline numpad as passcode input</div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/auto-init/" class="item-link item-content">
+                  <div class="item-inner">
+                    <div class="item-title">Automatic initialization</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="framework7/js/framework7.min.js"></script>
+  <script src="dist/framework7.keypad.min.js"></script>
+  <script>
+    Framework7.use(Framework7Keypad);
+
+    var app = new Framework7({
+      root: '#app',
+      routes: [
+        {
+          path: '/passcode/',
+          url: './passcode.html',
+          on: {
+            pageInit: function () {
+              var numpadInline = app.keypad.create({
+                inputEl: '#demo-numpad-inline',
+                containerEl: '#numpad-inline-container',
+                toolbar: false,
+                valueMaxLength: 4,
+                dotButton: false,
+                formatValue: function (value) {
+                  value = value.toString();
+                  return ('****').substring(0, value.length) + ('____').substring(0, 4 - value.length);
+                },
+                on: {
+                  change(keypad, value) {
+                    console.log(keypad, value);
+                    value = value.toString();
+                    if (value.length === 4) {
+                      app.dialog.alert('Thank you! Your passcode is<br><b>' + value + '</b>', function () {
+                        app.views.main.router.back();
+                      });
+                    }
+                  }
+                }
+              });
+            },
+          },
+        },
+        {
+          path: '/auto-init/',
+          url: './auto-init.html',
+        },
+      ],
+    });
+
+    var numpad = app.keypad.create({
+      inputEl: '#demo-numpad'
+    });
+    var numpadLimited = app.keypad.create({
+      inputEl: '#demo-numpad-limited',
+      valueMaxLength: 2,
+      dotButton: false
+    });
+    var calculator = app.keypad.create({
+      inputEl: '#demo-calculator',
+      type: 'calculator',
+      toolbar: false
+    });
+
+  </script>
+</body>
+</html>

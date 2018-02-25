@@ -6,13 +6,14 @@
   "jsnext:main": "dist/framework7.keypad.esm.js",
   "module": "dist/framework7.keypad.esm.js",
   "scripts": {
-    "copy-f7": "cpy node_modules/framework7/dist/js/*.* demo/framework7/js && cpy node_modules/framework7/dist/css/*.* demo/framework7/css",
+    "copy-f7": "cpy node_modules/framework7/dist/js/*.* framework7/js && cpy node_modules/framework7/dist/css/*.* framework7/css",
     "build:dev": "cross-env NODE_ENV=development gulp build",
     "build:prod": "cross-env NODE_ENV=production gulp build",
     "dev": "npm run copy-f7 && cross-env NODE_ENV=development gulp build && cross-env NODE_ENV=development gulp demo && cross-env NODE_ENV=development gulp server",
     "prod": "npm run copy-f7 && cross-env NODE_ENV=production gulp demo && cross-env NODE_ENV=production gulp server",
     "lint": "eslint .",
-    "test": "npm run build:dev && eslint ."
+    "test": "npm run build:dev && eslint .",
+    "postinstall": "npm run copy-f7 && cpy demo/*.html ./ && replace '../dist' 'dist' ./index.html"
   },
   "repository": {
     "type": "git",
