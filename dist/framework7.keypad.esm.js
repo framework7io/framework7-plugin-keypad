@@ -289,8 +289,8 @@ var KeypadClassConstructor = function (Framework7Class) {
               $buttonEl.addClass('calc-operator-active');
             }
           }
+          keypad.emit('local::buttonClick keypadButtonClick', keypad, button);
           if (button.onClick) {
-            keypad.emit('local:buttonClick keypadButtonClick', keypad, button);
             button.onClick(keypad, button);
           }
         }
@@ -772,7 +772,6 @@ var framework7_keypad = {
       closeByOutsideClick: true,
       scrollToInput: true,
       inputReadOnly: true,
-      convertToPopover: true,
       onlyInPopover: false,
       cssClass: null,
       toolbar: true,
