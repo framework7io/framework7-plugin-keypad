@@ -1,5 +1,4 @@
 .DS_Store
 node_modules
 build
-bower_components
-demo/libs
+demo/framework7

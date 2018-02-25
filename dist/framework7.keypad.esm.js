@@ -10,41 +10,33 @@
  * Released on: February 25, 2018
  */
 
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.Framework7Keypad = factory());
-}(this, (function () { 'use strict';
-
 var KeypadClassConstructor = function (Framework7Class) {
-  return (function (Framework7Class) {
-    function Keypad(app, params) {
-      Framework7Class.call(this, params, [app]);
+  return class Keypad extends Framework7Class {
+    constructor(app, params) {
+      super(params, [app]);
 
-      var Utils = app.utils;
-      var $ = app.$;
-      var request = app.request;
+      const Utils = app.utils;
+      const $ = app.$;
+      const request = app.request;
 
-      var keypad = this;
+      const keypad = this;
       keypad.app = app;
 
-      var defaults = Utils.extend({
+      const defaults = Utils.extend({
         on: {},
       }, app.params.keypad);
 
       keypad.params = Utils.extend(defaults, params);
 
-      var $containerEl;
+      let $containerEl;
 
       if (keypad.params.containerEl) {
         $containerEl = $(keypad.params.containerEl);
-        if ($containerEl.length === 0) { return keypad; }
+        if ($containerEl.length === 0) return keypad;
       }
 
       if (!keypad.params.buttons || keypad.params.buttons.length === 0) {
-        var ref = keypad.params;
-        var dotCharacter = ref.dotCharacter;
-        var dotButton = ref.dotButton;
+        const { dotCharacter, dotButton } = keypad.params;
         if (keypad.params.type === 'numpad') {
           keypad.params.buttons = [
             {
@@ -84,7 +76,7 @@ var KeypadClassConstructor = function (Framework7Class) {
               value: 9,
             },
             {
-              html: dotButton ? ("<span class=\"keypad-button-number\">" + dotCharacter + "</span>") : '',
+              html: dotButton ? `<span class="keypad-button-number">${dotCharacter}</span>` : '',
               value: dotButton ? dotCharacter : undefined,
               dark: true,
               cssClass: dotButton ? '' : 'keypad-dummy-button',
@@ -97,7 +89,8 @@ var KeypadClassConstructor = function (Framework7Class) {
               html: '<i class="icon icon-keypad-delete"></i>',
               cssClass: 'keypad-delete-button',
               dark: true,
-            } ];
+            },
+          ];
         } else if (params.type === 'calculator') {
           keypad.params.buttons = [
             {
@@ -185,16 +178,17 @@ var KeypadClassConstructor = function (Framework7Class) {
               html: '<span class="keypad-button-number">=</span>',
               value: '=',
               cssClass: 'calc-operator-button calc-operator-button-equal',
-            } ];
+            },
+          ];
         }
       }
 
-      var $inputEl;
+      let $inputEl;
       if (keypad.params.inputEl) {
         $inputEl = $(keypad.params.inputEl);
       }
 
-      var view;
+      let view;
       if (keypad.params.view) {
         view = keypad.params.view;
       } else if ($inputEl && $inputEl.length) {
@@ -202,19 +196,19 @@ var KeypadClassConstructor = function (Framework7Class) {
       } else {
         view = app.views.get($inputEl);
       }
-      if (!view) { view = app.views.main; }
+      if (!view) view = app.views.main;
 
       Utils.extend(keypad, {
-        app: app,
-        request: request,
-        $containerEl: $containerEl,
+        app,
+        request,
+        $containerEl,
         containerEl: $containerEl && $containerEl[0],
         inline: $containerEl && $containerEl.length > 0,
-        $inputEl: $inputEl,
+        $inputEl,
         inputEl: $inputEl && $inputEl[0],
         initialized: false,
         opened: false,
-        view: view,
+        view,
         url: keypad.params.url,
         calcValues: [],
         calcOperations: [],
@@ -229,10 +223,10 @@ var KeypadClassConstructor = function (Framework7Class) {
         e.preventDefault();
       }
       function onHtmlClick(e) {
-        var $targetEl = $(e.target);
-        if (keypad.isPopover()) { return; }
-        if (!keypad.opened) { return; }
-        if ($targetEl.closest('[class*="backdrop"]').length) { return; }
+        const $targetEl = $(e.target);
+        if (keypad.isPopover()) return;
+        if (!keypad.opened) return;
+        if ($targetEl.closest('[class*="backdrop"]').length) return;
         if ($inputEl && $inputEl.length > 0) {
           if ($targetEl[0] !== $inputEl[0] && $targetEl.closest('.sheet-modal, .keypad-modal').length === 0) {
             keypad.close();
@@ -242,42 +236,42 @@ var KeypadClassConstructor = function (Framework7Class) {
         }
       }
       Utils.extend(keypad, {
-        attachInputEvents: function attachInputEvents() {
+        attachInputEvents() {
           keypad.$inputEl.on('click', onInputClick);
           if (keypad.params.inputReadOnly) {
             keypad.$inputEl.on('focus mousedown', onInputFocus);
           }
         },
-        detachInputEvents: function detachInputEvents() {
+        detachInputEvents() {
           keypad.$inputEl.off('click', onInputClick);
           if (keypad.params.inputReadOnly) {
             keypad.$inputEl.off('focus mousedown', onInputFocus);
           }
         },
-        attachHtmlEvents: function attachHtmlEvents() {
+        attachHtmlEvents() {
           app.on('click', onHtmlClick);
         },
-        detachHtmlEvents: function detachHtmlEvents() {
+        detachHtmlEvents() {
           app.off('click', onHtmlClick);
         },
       });
 
 
       keypad.attachKeypadEvents = function attachKeypadEvents() {
-        var $buttonsEl = keypad.$el.find('.keypad-buttons');
+        const $buttonsEl = keypad.$el.find('.keypad-buttons');
 
         function handleClick(e) {
-          var $buttonEl = $(e.target);
+          let $buttonEl = $(e.target);
           if (!$buttonEl.hasClass('keypad-button')) {
             $buttonEl = $buttonEl.parents('.keypad-button');
           }
-          if ($buttonEl.length === 0) { return; }
-          var button = keypad.params.buttons[$buttonEl.index()];
-          var buttonValue = button.value;
-          var currentValue = keypad.value;
+          if ($buttonEl.length === 0) return;
+          const button = keypad.params.buttons[$buttonEl.index()];
+          let buttonValue = button.value;
+          let currentValue = keypad.value;
 
           if (keypad.params.type === 'numpad') {
-            if (typeof currentValue === 'undefined') { currentValue = ''; }
+            if (typeof currentValue === 'undefined') currentValue = '';
             if ($buttonEl.hasClass('keypad-delete-button')) {
               currentValue = currentValue.substring(0, currentValue.length - 1);
             } else if (typeof buttonValue !== 'undefined') {
@@ -286,7 +280,7 @@ var KeypadClassConstructor = function (Framework7Class) {
               }
               currentValue += buttonValue;
             }
-            if (typeof currentValue !== 'undefined') { keypad.setValue(currentValue); }
+            if (typeof currentValue !== 'undefined') keypad.setValue(currentValue);
           }
           if (keypad.params.type === 'calculator') {
             keypad.calculator(button.value);
@@ -319,25 +313,19 @@ var KeypadClassConstructor = function (Framework7Class) {
 
       return keypad;
     }
-
-    if ( Framework7Class ) Keypad.__proto__ = Framework7Class;
-    Keypad.prototype = Object.create( Framework7Class && Framework7Class.prototype );
-    Keypad.prototype.constructor = Keypad;
-    Keypad.prototype.initInput = function initInput () {
-      var keypad = this;
-      if (!keypad.$inputEl) { return; }
-      if (keypad.params.inputReadOnly) { keypad.$inputEl.prop('readOnly', true); }
-    };
-    Keypad.prototype.isPopover = function isPopover () {
-      var keypad = this;
-      var app = keypad.app;
-      var modal = keypad.modal;
-      var params = keypad.params;
-      if (params.openIn === 'sheet') { return false; }
-      if (modal && modal.type !== 'popover') { return false; }
+    initInput() {
+      const keypad = this;
+      if (!keypad.$inputEl) return;
+      if (keypad.params.inputReadOnly) keypad.$inputEl.prop('readOnly', true);
+    }
+    isPopover() {
+      const keypad = this;
+      const { app, modal, params } = keypad;
+      if (params.openIn === 'sheet') return false;
+      if (modal && modal.type !== 'popover') return false;
 
       if (!keypad.inline && keypad.inputEl) {
-        if (params.openIn === 'popover') { return true; }
+        if (params.openIn === 'popover') return true;
         else if (app.device.ios) {
           return !!app.device.ipad;
         } else if (app.width >= 768) {
@@ -345,18 +333,18 @@ var KeypadClassConstructor = function (Framework7Class) {
         }
       }
       return false;
-    };
-    Keypad.prototype.calculator = function calculator (value) {
-      var keypad = this;
-      var operators = ('+ - = × ÷ ± %').split(' ');
-      var numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.'];
-      var reset = 'C';
-      var invert = '±';
-      var perc = '%';
+    }
+    calculator(value) {
+      const keypad = this;
+      const operators = ('+ - = × ÷ ± %').split(' ');
+      const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.'];
+      const reset = 'C';
+      const invert = '±';
+      const perc = '%';
       function calc() {
-        var toEval = '';
-        for (var i = 0; i < keypad.calcOperations.length; i += 1) {
-          var operation = keypad.calcOperations[i];
+        let toEval = '';
+        for (let i = 0; i < keypad.calcOperations.length; i += 1) {
+          let operation = keypad.calcOperations[i];
           // eslint-disable-next-line
           if (i === keypad.calcOperations.length - 1 && operators.indexOf(operation) >= 0) {
 
@@ -364,7 +352,7 @@ var KeypadClassConstructor = function (Framework7Class) {
             if (operation === '.') {
               operation = 0;
             }
-            toEval += (("" + (operation.toString())))
+            toEval += (`${operation.toString()}`)
               .replace('×', '*')
               .replace('÷', '/');
           }
@@ -373,7 +361,7 @@ var KeypadClassConstructor = function (Framework7Class) {
         // eslint-disable-next-line
         keypad.setValue(eval.call(window, toEval));
       }
-      if (!keypad.value) { keypad.value = 0; }
+      if (!keypad.value) keypad.value = 0;
       if (value === reset) {
         keypad.setValue(0);
         keypad.calcValues = [];
@@ -382,34 +370,34 @@ var KeypadClassConstructor = function (Framework7Class) {
       }
       if (numbers.indexOf(value) >= 0) {
         if (value === '.') {
-          if (keypad.lastWasNumber && keypad.value.toString().indexOf('.') >= 0) { return; }
+          if (keypad.lastWasNumber && keypad.value.toString().indexOf('.') >= 0) return;
         }
         if (operators.indexOf(keypad.calcValues[keypad.calcValues.length - 1]) >= 0) {
           keypad.setValue(value);
         } else {
-          keypad.setValue(keypad.value ? ("" + (keypad.value) + value) : value);
+          keypad.setValue(keypad.value ? `${keypad.value}${value}` : value);
         }
         keypad.lastWasNumber = true;
       }
       if (operators.indexOf(value) >= 0) {
         if (value === invert) {
-          if (keypad.value === '.') { return; }
+          if (keypad.value === '.') return;
           keypad.setValue(-1 * keypad.value);
           keypad.lastWasNumber = true;
         } else if (value === perc) {
           if (keypad.calcOperations[keypad.calcOperations.length - 2]) {
-            var percents = keypad.value / 100;
+            const percents = keypad.value / 100;
             keypad.setValue(keypad.calcOperations[keypad.calcOperations.length - 2] * percents);
           }
           keypad.lastWasNumber = true;
         } else {
-          var lastOperation = keypad.calcOperations[keypad.calcOperations.length - 1];
+          const lastOperation = keypad.calcOperations[keypad.calcOperations.length - 1];
           if (value === '=') {
             if (keypad.calcOperations[keypad.calcOperations.length - 1] === '=') {
-              if (keypad.calcOperations.length < 2) { return; }
+              if (keypad.calcOperations.length < 2) return;
               keypad.calcOperations.pop();
-              var val1 = keypad.calcOperations[keypad.calcOperations.length - 2];
-              var val2 = keypad.calcOperations[keypad.calcOperations.length - 1];
+              const val1 = keypad.calcOperations[keypad.calcOperations.length - 2];
+              const val2 = keypad.calcOperations[keypad.calcOperations.length - 1];
               keypad.calcOperations.push(val1);
               keypad.calcOperations.push(val2);
             } else {
@@ -443,23 +431,23 @@ var KeypadClassConstructor = function (Framework7Class) {
           keypad.lastWasNumber = false;
         }
       }
-      if (value !== invert && value !== perc) { keypad.calcValues.push(value); }
-    };
-    Keypad.prototype.formatValue = function formatValue (value) {
-      var keypad = this;
-      if (keypad.params.formatValue) { return keypad.params.formatValue.call(keypad, value); }
+      if (value !== invert && value !== perc) keypad.calcValues.push(value);
+    }
+    formatValue(value) {
+      const keypad = this;
+      if (keypad.params.formatValue) return keypad.params.formatValue.call(keypad, value);
       return value;
-    };
-    Keypad.prototype.setValue = function setValue (value) {
-      var keypad = this;
+    }
+    setValue(value) {
+      const keypad = this;
       keypad.updateValue(value);
-    };
-    Keypad.prototype.getValue = function getValue () {
-      var keypad = this;
+    }
+    getValue() {
+      const keypad = this;
       return keypad.value;
-    };
-    Keypad.prototype.updateValue = function updateValue (newValue) {
-      var keypad = this;
+    }
+    updateValue(newValue) {
+      const keypad = this;
       keypad.value = newValue;
       if (keypad.params.valueMaxLength && keypad.value.length > keypad.params.valueMaxLength) {
         keypad.value = keypad.value.substring(0, keypad.params.valueMaxLength);
@@ -469,83 +457,105 @@ var KeypadClassConstructor = function (Framework7Class) {
         keypad.$inputEl.val(keypad.formatValue(keypad.value));
         keypad.$inputEl.trigger('change');
       }
-    };
-    Keypad.prototype.renderButtons = function renderButtons () {
-      var keypad = this;
-      var buttonsHTML = '';
-      var buttonClass;
-      var button;
-      for (var i = 0; i < keypad.params.buttons.length; i += 1) {
+    }
+    renderButtons() {
+      const keypad = this;
+      let buttonsHTML = '';
+      let buttonClass;
+      let button;
+      for (let i = 0; i < keypad.params.buttons.length; i += 1) {
         button = keypad.params.buttons[i];
         buttonClass = 'keypad-button';
-        if (button.dark) { buttonClass += ' keypad-button-dark'; }
-        if (button.cssClass) { buttonClass += " " + (button.cssClass); }
-        buttonsHTML += "<span class=\"" + buttonClass + "\">" + (button.html || '') + "</span>";
+        if (button.dark) buttonClass += ' keypad-button-dark';
+        if (button.cssClass) buttonClass += ` ${button.cssClass}`;
+        buttonsHTML += `<span class="${buttonClass}">${button.html || ''}</span>`;
       }
       return buttonsHTML;
-    };
-    Keypad.prototype.renderToolbar = function renderToolbar () {
-      var keypad = this;
-      if (keypad.params.renderToolbar) { return keypad.params.renderToolbar.call(keypad, keypad); }
+    }
+    renderToolbar() {
+      const keypad = this;
+      if (keypad.params.renderToolbar) return keypad.params.renderToolbar.call(keypad, keypad);
 
-      var toolbarHtml = "\n        <div class=\"toolbar\">\n          <div class=\"toolbar-inner\">\n            <div class=\"left\"></div>\n            <div class=\"right\">\n              <a href=\"#\" class=\"link sheet-close popover-close\">" + (keypad.params.toolbarCloseText) + "</a>\n            </div>\n          </div>\n        </div>\n      ";
+      const toolbarHtml = `
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <div class="left"></div>
+            <div class="right">
+              <a href="#" class="link sheet-close popover-close">${keypad.params.toolbarCloseText}</a>
+            </div>
+          </div>
+        </div>
+      `;
       return toolbarHtml.trim();
-    };
-    Keypad.prototype.renderSheet = function renderSheet () {
-      var keypad = this;
-      if (keypad.params.renderSheet) { return keypad.params.renderSheet.call(keypad, keypad); }
-      var ref = keypad.params;
-      var cssClass = ref.cssClass;
-      var toolbar = ref.toolbar;
+    }
+    renderSheet() {
+      const keypad = this;
+      if (keypad.params.renderSheet) return keypad.params.renderSheet.call(keypad, keypad);
+      const { cssClass, toolbar } = keypad.params;
 
-      var sheetHtml = "\n        <div class=\"sheet-modal keypad keypad-sheet keypad-type-" + (keypad.params.type) + " " + (cssClass || '') + "\">\n          " + (toolbar ? keypad.renderToolbar() : '') + "\n          <div class=\"sheet-modal-inner keypad-buttons\">\n            " + (keypad.renderButtons()) + "\n          </div>\n        </div>\n      ";
+      const sheetHtml = `
+        <div class="sheet-modal keypad keypad-sheet keypad-type-${keypad.params.type} ${cssClass || ''}">
+          ${toolbar ? keypad.renderToolbar() : ''}
+          <div class="sheet-modal-inner keypad-buttons">
+            ${keypad.renderButtons()}
+          </div>
+        </div>
+      `;
 
       return sheetHtml;
-    };
-    Keypad.prototype.renderPopover = function renderPopover () {
-      var keypad = this;
-      if (keypad.params.renderPopover) { return keypad.params.renderPopover.call(keypad, keypad); }
-      var ref = keypad.params;
-      var cssClass = ref.cssClass;
-      var toolbar = ref.toolbar;
-      var popoverHtml = ("\n        <div class=\"popover keypad-popover\">\n          <div class=\"popover-inner\">\n            <div class=\"keypad keypad-type-" + (keypad.params.type) + " " + (cssClass || '') + "\">\n              " + (toolbar ? keypad.renderToolbar() : '') + "\n              <div class=\"keypad-buttons\">\n                " + (keypad.renderButtons()) + "\n              </div>\n            </div>\n          </div>\n        </div>\n      ").trim();
+    }
+    renderPopover() {
+      const keypad = this;
+      if (keypad.params.renderPopover) return keypad.params.renderPopover.call(keypad, keypad);
+      const { cssClass, toolbar } = keypad.params;
+      const popoverHtml = `
+        <div class="popover keypad-popover">
+          <div class="popover-inner">
+            <div class="keypad keypad-type-${keypad.params.type} ${cssClass || ''}">
+              ${toolbar ? keypad.renderToolbar() : ''}
+              <div class="keypad-buttons">
+                ${keypad.renderButtons()}
+              </div>
+            </div>
+          </div>
+        </div>
+      `.trim();
 
       return popoverHtml;
-    };
-    Keypad.prototype.renderInline = function renderInline () {
-      var keypad = this;
-      if (keypad.params.renderInline) { return keypad.params.renderInline.call(keypad, keypad); }
-      var ref = keypad.params;
-      var cssClass = ref.cssClass;
-      var toolbar = ref.toolbar;
+    }
+    renderInline() {
+      const keypad = this;
+      if (keypad.params.renderInline) return keypad.params.renderInline.call(keypad, keypad);
+      const { cssClass, toolbar } = keypad.params;
 
-      var inlineHtml = "\n        <div class=\"keypad keypad-inline keypad-type-" + (keypad.params.type) + " " + (cssClass || '') + "\">\n          " + (toolbar ? keypad.renderToolbar() : '') + "\n          <div class=\"keypad-buttons\">\n            " + (keypad.renderButtons()) + "\n          </div>\n        </div>\n      ";
+      const inlineHtml = `
+        <div class="keypad keypad-inline keypad-type-${keypad.params.type} ${cssClass || ''}">
+          ${toolbar ? keypad.renderToolbar() : ''}
+          <div class="keypad-buttons">
+            ${keypad.renderButtons()}
+          </div>
+        </div>
+      `;
 
       return inlineHtml;
-    };
-    Keypad.prototype.render = function render () {
-      var keypad = this;
-      var params = keypad.params;
-      if (params.render) { return params.render.call(keypad); }
+    }
+    render() {
+      const keypad = this;
+      const { params } = keypad;
+      if (params.render) return params.render.call(keypad);
       if (!keypad.inline) {
-        var modalType = params.openIn;
-        if (modalType === 'auto') { modalType = keypad.isPopover() ? 'popover' : 'sheet'; }
+        let modalType = params.openIn;
+        if (modalType === 'auto') modalType = keypad.isPopover() ? 'popover' : 'sheet';
 
-        if (modalType === 'popover') { return keypad.renderPopover(); }
-        else if (modalType === 'sheet') { return keypad.renderSheet(); }
+        if (modalType === 'popover') return keypad.renderPopover();
+        else if (modalType === 'sheet') return keypad.renderSheet();
       }
       return keypad.renderInline();
-    };
+    }
 
-    Keypad.prototype.onOpen = function onOpen () {
-      var keypad = this;
-      var initialized = keypad.initialized;
-      var $el = keypad.$el;
-      var app = keypad.app;
-      var $inputEl = keypad.$inputEl;
-      var inline = keypad.inline;
-      var value = keypad.value;
-      var params = keypad.params;
+    onOpen() {
+      const keypad = this;
+      const { initialized, $el, app, $inputEl, inline, value, params } = keypad;
       keypad.opened = true;
 
       // Init main events
@@ -553,7 +563,7 @@ var KeypadClassConstructor = function (Framework7Class) {
 
       // Set value
       if (!initialized) {
-        if (value) { keypad.setValue(value); }
+        if (value) keypad.setValue(value);
         else if (params.value) {
           keypad.setValue(params.value);
         }
@@ -576,9 +586,9 @@ var KeypadClassConstructor = function (Framework7Class) {
         $inputEl.trigger('keypad:open', keypad);
       }
       keypad.emit('local::open keypadOpen', keypad);
-    };
-    Keypad.prototype.onOpened = function onOpened () {
-      var keypad = this;
+    }
+    onOpened() {
+      const keypad = this;
       if (keypad.$el) {
         keypad.$el.trigger('keypad:opened', keypad);
       }
@@ -586,10 +596,10 @@ var KeypadClassConstructor = function (Framework7Class) {
         keypad.$inputEl.trigger('keypad:opened', keypad);
       }
       keypad.emit('local::opened keypadOpened', keypad);
-    };
-    Keypad.prototype.onClose = function onClose () {
-      var keypad = this;
-      var app = keypad.app;
+    }
+    onClose() {
+      const keypad = this;
+      const app = keypad.app;
 
       if (keypad.$inputEl && app.theme === 'md') {
         keypad.$inputEl.trigger('blur');
@@ -605,13 +615,13 @@ var KeypadClassConstructor = function (Framework7Class) {
         keypad.$inputEl.trigger('keypad:close', keypad);
       }
       keypad.emit('local::close keypadClose', keypad);
-    };
-    Keypad.prototype.onClosed = function onClosed () {
-      var keypad = this;
+    }
+    onClosed() {
+      const keypad = this;
       keypad.opened = false;
 
       if (!keypad.inline) {
-        keypad.app.utils.nextTick(function () {
+        keypad.app.utils.nextTick(() => {
           if (keypad.modal && keypad.modal.el && keypad.modal.destroy) {
             if (!keypad.params.routableModals) {
               keypad.modal.destroy();
@@ -627,17 +637,11 @@ var KeypadClassConstructor = function (Framework7Class) {
         keypad.$inputEl.trigger('keypad:closed', keypad);
       }
       keypad.emit('local::closed keypadClosed', keypad);
-    };
-    Keypad.prototype.open = function open () {
-      var obj;
-
-      var keypad = this;
-      var app = keypad.app;
-      var opened = keypad.opened;
-      var inline = keypad.inline;
-      var $inputEl = keypad.$inputEl;
-      var params = keypad.params;
-      if (opened) { return; }
+    }
+    open() {
+      const keypad = this;
+      const { app, opened, inline, $inputEl, params } = keypad;
+      if (opened) return;
 
       if (inline) {
         keypad.$el = app.$(keypad.render());
@@ -647,47 +651,47 @@ var KeypadClassConstructor = function (Framework7Class) {
         keypad.onOpened();
         return;
       }
-      var modalType = params.openIn;
+      let modalType = params.openIn;
       if (modalType === 'auto') {
         modalType = keypad.isPopover() ? 'popover' : 'sheet';
       }
-      var modalContent = keypad.render();
+      const modalContent = keypad.render();
 
-      var modalParams = {
+      const modalParams = {
         targetEl: $inputEl,
         scrollToEl: keypad.params.scrollToInput ? $inputEl : undefined,
         content: modalContent,
         backdrop: modalType !== 'sheet',
         on: {
-          open: function open() {
-            var modal = this;
+          open() {
+            const modal = this;
             keypad.modal = modal;
             keypad.$el = modalType === 'popover' ? modal.$el.find('.keypad') : modal.$el;
             keypad.$el[0].f7Keypad = keypad;
             keypad.onOpen();
           },
-          opened: function opened() { keypad.onOpened(); },
-          close: function close() { keypad.onClose(); },
-          closed: function closed() { keypad.onClosed(); },
+          opened() { keypad.onOpened(); },
+          close() { keypad.onClose(); },
+          closed() { keypad.onClosed(); },
         },
       };
       if (keypad.params.routableModals) {
         keypad.view.router.navigate({
           url: keypad.url,
-          route: ( obj = {
-            path: keypad.url
-          }, obj[modalType] = modalParams, obj ),
+          route: {
+            path: keypad.url,
+            [modalType]: modalParams,
+          },
         });
       } else {
         keypad.modal = app[modalType].create(modalParams);
         keypad.modal.open();
       }
-    };
-    Keypad.prototype.close = function close () {
-      var keypad = this;
-      var opened = keypad.opened;
-      var inline = keypad.inline;
-      if (!opened) { return; }
+    }
+    close() {
+      const keypad = this;
+      const { opened, inline } = keypad;
+      if (!opened) return;
       if (inline) {
         keypad.onClose();
         keypad.onClosed();
@@ -698,9 +702,9 @@ var KeypadClassConstructor = function (Framework7Class) {
       } else {
         keypad.modal.close();
       }
-    };
-    Keypad.prototype.init = function init () {
-      var keypad = this;
+    }
+    init() {
+      const keypad = this;
       keypad.initInput();
 
       if (keypad.inline) {
@@ -721,13 +725,13 @@ var KeypadClassConstructor = function (Framework7Class) {
         keypad.attachHtmlEvents();
       }
       keypad.emit('local::init keypadInit', keypad);
-    };
-    Keypad.prototype.destroy = function destroy () {
-      var keypad = this;
-      if (keypad.destroyed) { return; }
-      var $el = keypad.$el;
+    }
+    destroy() {
+      const keypad = this;
+      if (keypad.destroyed) return;
+      const { $el } = keypad;
       keypad.emit('local::beforeDestroy keypadBeforeDestroy', keypad);
-      if ($el) { $el.trigger('keypad:beforedestroy', keypad); }
+      if ($el) $el.trigger('keypad:beforedestroy', keypad);
 
       keypad.close();
 
@@ -739,20 +743,18 @@ var KeypadClassConstructor = function (Framework7Class) {
         keypad.detachHtmlEvents();
       }
 
-      if ($el && $el.length) { delete keypad.$el[0].f7Keypad; }
+      if ($el && $el.length) delete keypad.$el[0].f7Keypad;
       keypad.app.utils.deleteProps(keypad);
       keypad.destroyed = true;
-    };
-
-    return Keypad;
-  }(Framework7Class));
+    }
+  };
 };
 
-var Keypad;
+let Keypad;
 var framework7_keypad = {
   name: 'keypad',
-  install: function install() {
-    var Framework7 = this;
+  install() {
+    const Framework7 = this;
     Keypad = KeypadClassConstructor(Framework7.Class);
     Framework7.Keypad = Keypad;
   },
@@ -785,62 +787,54 @@ var framework7_keypad = {
       render: null,
     },
   },
-  create: function create() {
-    var app = this;
-    var $ = app.$;
+  create() {
+    const app = this;
+    const $ = app.$;
     app.keypad = {
-      create: function create(params) {
+      create(params) {
         return new Keypad(app, params);
       },
-      get: function get(el) {
-        if ( el === void 0 ) el = '.keypad';
-
-        if (el instanceof Keypad) { return el; }
-        var $el = $(el);
-        if ($el.length === 0) { return undefined; }
+      get(el = '.keypad') {
+        if (el instanceof Keypad) return el;
+        const $el = $(el);
+        if ($el.length === 0) return undefined;
         return $el[0].f7Keypad;
       },
-      destroy: function destroy(el) {
-        if ( el === void 0 ) el = '.keypad';
-
-        var instance = app.keypad.get(el);
-        if (instance && instance.destroy) { return instance.destroy(); }
+      destroy(el = '.keypad') {
+        const instance = app.keypad.get(el);
+        if (instance && instance.destroy) return instance.destroy();
         return undefined;
       },
-      close: function close(el) {
-        if ( el === void 0 ) el = '.keypad';
-
-        var $el = $(el);
-        if ($el.length === 0) { return; }
-        var keypad = $el[0].f7Keypad;
-        if (!keypad || (keypad && !keypad.opened)) { return; }
+      close(el = '.keypad') {
+        const $el = $(el);
+        if ($el.length === 0) return;
+        const keypad = $el[0].f7Keypad;
+        if (!keypad || (keypad && !keypad.opened)) return;
         keypad.close();
       },
     };
   },
   on: {
-    pageInit: function pageInit(page) {
-      var $ = page.app.$;
-      var app = page.app;
-      page.$el.find('input[type="numpad"], input[type="calculator"]').each(function (index, inputEl) {
-        var $inputEl = $(inputEl);
-        var params = {
-          inputEl: inputEl,
+    pageInit(page) {
+      const $ = page.app.$;
+      const app = page.app;
+      page.$el.find('input[type="numpad"], input[type="calculator"]').each((index, inputEl) => {
+        const $inputEl = $(inputEl);
+        const params = {
+          inputEl,
           type: $inputEl.attr('type'),
           value: $inputEl.val() || 0,
         };
-        if ($inputEl.attr('maxlength')) { params.valueMaxLength = $inputEl.attr('maxlength'); }
+        if ($inputEl.attr('maxlength')) params.valueMaxLength = $inputEl.attr('maxlength');
         app.keypad.create(app.utils.extend(params, $inputEl.dataset()));
       });
     },
-    pageBeforeRemove: function pageBeforeRemove(page) {
-      page.$el.find('input[type="numpad"], input[type="calculator"]').each(function (index, inputEl) {
+    pageBeforeRemove(page) {
+      page.$el.find('input[type="numpad"], input[type="calculator"]').each((index, inputEl) => {
         page.app.keypad.destroy(inputEl);
       });
     },
   },
 };
 
-return framework7_keypad;
-
-})));
+export default framework7_keypad;
