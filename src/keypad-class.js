@@ -281,12 +281,13 @@ export default function (Framework7Class) {
           if (button.onClick) {
             button.onClick(keypad, button);
           }
+          e.preventDefault();
         }
 
-        $buttonsEl.on('click', handleClick);
+        $buttonsEl.on('touchstart click', handleClick);
 
         keypad.detachKeypadEvents = function detachKeypadEvents() {
-          $buttonsEl.off('click', handleClick);
+          $buttonsEl.off('touchstart click', handleClick);
         };
       };
 
