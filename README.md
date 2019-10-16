@@ -106,6 +106,14 @@ Let's look on list of all available parameters:
       </td>
     </tr>
     <tr>
+      <td>backdrop</td>
+      <td>boolean</td>
+      <td></td>
+      <td>
+        Allows enable/disable backdrop. If not specified then it will be enabled when it opened in Popover.
+      </td>
+    </tr>
+    <tr>
       <td>containerEl</td>
       <td>string or HTMLElement</td>
       <td></td>
@@ -437,6 +445,30 @@ If you initialize Keypad as inline Keypad or using automatic initialization, it 
 
 ```js
 var myKeypad = $$('.keypad-inline')[0].f7Keypad;
+```
+
+## CSS Custom Properties
+
+The following CSS custom properties available to customize it:
+
+```css
+:root {
+  --f7-keypad-button-bg-color: #fcfcfd;
+  --f7-keypad-button-text-color: #000;
+  --f7-keypad-button-border-color: rgba(0,0,0,0.1);
+  --f7-keypad-button-pressed-bg-color: #bcc0c5;
+  --f7-keypad-button-dark-bg-color: #ddd;
+  --f7-keypad-button-dark-pressed-bg-color: #fcfcfd;
+
+  --f7-keypad-button-number-font-size: 28px;
+  --f7-keypad-button-number-letters-size: 11px;
+
+  --f7-keypad-calc-button-text-color: #fff;
+  --f7-keypad-calc-button-bg-color: #ff9500;
+  --f7-keypad-calc-button-pressed-bg-color: #e0750e;
+  --f7-keypad-calc-button-active-border-color: rgba(0,0,0,0.4);
+  --f7-keypad-calc-button-active-border-width: 1px;
+}
 ```
 
 ## Demo

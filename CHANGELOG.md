@@ -1,5 +1,12 @@
 # Change Log
 
+# [v3.0.0](https://github.com/framework7io/framework7/compare/v2.0.0...v3.0.0) - October 16, 2019
+  * Reworked click events to be fully compatible with Framework7 v5 making clicks more responsive without FastClicks
+  * Added `backdrop` parameter to have more control over modal backdrop
+  * Added CSS Custom Properties for easier colors customization
+  * Package files renamed from `framework.keypad...` to `framework7-keypad...`
+  * Minor fixes
+
 # [v2.0.0](https://github.com/framework7io/framework7/compare/v1.0.3...v2.0.0) - February 25, 2018
 
   * Reworked to be compatible with Framework7 v2
