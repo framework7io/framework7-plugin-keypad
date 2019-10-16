@@ -15,11 +15,11 @@ npm install framework7-plugin-keypad
 And link them to your app right AFTER Framework7's scripts and styles:
 
 ```
-<link rel="stylesheet" href="path/to/framework7.min.css">
-<link rel="stylesheet" href="path/to/framework7.keypad.css">
+<link rel="stylesheet" href="path/to/framework7.bundle.min.css">
+<link rel="stylesheet" href="path/to/framework7-keypad.min.css">
 ...
-<script src="path/to/framework7.min.js"></script>
-<script src="path/to/framework7.keypad.js"></script>
+<script src="path/to/framework7.bundle.min.js"></script>
+<script src="path/to/framework7-keypad.min.js"></script>
 ```
 
 ## Usage
