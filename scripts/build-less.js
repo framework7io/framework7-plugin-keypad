@@ -5,8 +5,6 @@
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
 const gulp = require('gulp');
-const fs = require('fs');
-const modifyFile = require('gulp-modify-file');
 const less = require('gulp-less');
 const autoprefixer = require('gulp-autoprefixer');
 const header = require('gulp-header');
@@ -16,7 +14,7 @@ const banner = require('./banner.js');
 
 function build(cb) {
   const env = process.env.NODE_ENV || 'development';
-  gulp.src('./src/framework7.keypad.less')
+  gulp.src('./src/framework7-keypad.less')
     .pipe(less())
     .on('error', (err) => {
       if (cb) cb();
@@ -36,7 +34,7 @@ function build(cb) {
         if (cb) cb();
         return;
       }
-      gulp.src('./dist/framework7.keypad.css')
+      gulp.src('./dist/framework7-keypad.css')
         .pipe(cleanCSS({
           advanced: false,
           aggressiveMerging: false,
@@ -54,8 +52,6 @@ function build(cb) {
 
 
 function buildLess(cb) {
-  const env = process.env.NODE_ENV || 'development';
-
   build(() => {
     if (cb) cb();
   });

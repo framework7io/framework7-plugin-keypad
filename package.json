@@ -1,12 +1,12 @@
 {
   "name": "framework7-plugin-keypad",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Keypad plugin extends Framework7 with additional custom keyboards",
   "main": "dist/framework7.keypad.js",
   "jsnext:main": "dist/framework7.keypad.esm.js",
   "module": "dist/framework7.keypad.esm.js",
   "scripts": {
-    "copy-f7": "cpy node_modules/framework7/dist/js/*.* demo/framework7/js && cpy node_modules/framework7/dist/css/*.* demo/framework7/css",
+    "copy-f7": "cpy node_modules/framework7/js/*.* demo/framework7/js && cpy node_modules/framework7/css/*.* demo/framework7/css",
     "build:dev": "cross-env NODE_ENV=development gulp build",
     "build:prod": "cross-env NODE_ENV=production gulp build",
     "dev": "npm run copy-f7 && cross-env NODE_ENV=development gulp build && cross-env NODE_ENV=development gulp demo && cross-env NODE_ENV=development gulp server",
@@ -36,9 +36,7 @@
     "f7"
   ],
   "author": "Vladimir Kharlampidi",
-  "license": [
-    "MIT"
-  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/framework7io/framework7-plugin-keypad/issues"
   },
@@ -47,32 +45,26 @@
     "node": ">= 0.10.0"
   },
   "devDependencies": {
-    "cpy-cli": "^1.0.1",
-    "cross-env": "^5.1.1",
-    "eslint": "^4.10.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "framework7": "^2.0.10",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-clean-css": "^3.9.0",
-    "gulp-connect": "^5.0.0",
-    "gulp-header": "^2.0.1",
-    "gulp-if": "^2.0.2",
-    "gulp-less": "^3.5.0",
-    "gulp-modify-file": "^1.0.0",
-    "gulp-open": "^3.0.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^2.6.1",
-    "gulp-uglify": "^3.0.0",
-    "replace": "^0.3.0",
-    "rollup": "^0.56.0",
-    "rollup-plugin-buble": "^0.19.0",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-replace": "^2.0.0",
-    "rollup-stream": "^1.24.1",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "acorn": "^7.1.0",
+    "cpy-cli": "^2.0.0",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "framework7": "^5.0.5",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-connect": "^5.7.0",
+    "gulp-header": "^2.0.9",
+    "gulp-less": "^4.0.1",
+    "gulp-open": "^3.0.1",
+    "gulp-rename": "^1.4.0",
+    "rollup": "^1.24.0",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "terser": "^4.3.9"
   }
 }
