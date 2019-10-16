@@ -1,5 +1,5 @@
 /**
- * Framework7 Plugin Keypad 3.0.0
+ * Framework7 Plugin Keypad 3.0.1
  * Keypad plugin extends Framework7 with additional custom keyboards
  * http://framework7.io/plugins/
  *
@@ -10,6 +10,11 @@
  * Released on: October 16, 2019
  */
 :root {
+  --f7-keypad-height: 260px;
+  --f7-keypad-landscape-height: 200px;
+  --f7-keypad-inline-height: 200px;
+  --f7-keypad-inline-calc-height: 260px;
+  --f7-keypad-popover-width: 300px;
   --f7-keypad-button-bg-color: #fcfcfd;
   --f7-keypad-button-text-color: #000;
   --f7-keypad-button-border-color: rgba(0, 0, 0, 0.1);
@@ -25,10 +30,10 @@
   --f7-keypad-calc-button-active-border-width: 1px;
 }
 .keypad-popover {
-  width: 300px;
+  width: var(--f7-keypad-popover-width);
 }
 .keypad-popover .keypad {
-  height: 260px;
+  height: var(--f7-keypad-height);
 }
 .ios .keypad-popover .toolbar {
   background: none;
@@ -40,16 +45,20 @@
 .keypad-popover .toolbar ~ .keypad-buttons {
   border-radius: 0 0 var(--f7-popover-border-radius) var(--f7-popover-border-radius);
 }
+.keypad-sheet {
+  padding-bottom: var(--f7-safe-area-bottom);
+  height: calc(var(--f7-safe-area-bottom) + var(--f7-keypad-height));
+}
 @media (orientation: landscape) and (max-height: 415px) {
   .keypad-sheet {
-    height: 200px;
+    height: var(--f7-keypad-landscape-height);
   }
 }
 .keypad-inline {
-  height: 200px;
+  height: var(--f7-keypad-inline-height);
 }
 .keypad-inline.keypad-type-calculator {
-  height: 260px;
+  height: var(--f7-keypad-inline-calc-height);
 }
 .keypad-inline .keypad-buttons,
 .keypad-popover .keypad .keypad-buttons {
