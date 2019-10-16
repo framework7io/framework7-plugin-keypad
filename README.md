@@ -453,6 +453,12 @@ The following CSS custom properties available to customize it:
 
 ```css
 :root {
+  --f7-keypad-height: 260px;
+  --f7-keypad-landscape-height: 200px;
+  --f7-keypad-inline-height: 200px;
+  --f7-keypad-inline-calc-height: 260px;
+  --f7-keypad-popover-width: 300px;
+
   --f7-keypad-button-bg-color: #fcfcfd;
   --f7-keypad-button-text-color: #000;
   --f7-keypad-button-border-color: rgba(0,0,0,0.1);

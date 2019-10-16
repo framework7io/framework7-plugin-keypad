@@ -1,5 +1,5 @@
 /**
- * Framework7 Plugin Keypad 3.0.0
+ * Framework7 Plugin Keypad 3.0.1
  * Keypad plugin extends Framework7 with additional custom keyboards
  * http://framework7.io/plugins/
  *
