@@ -2,9 +2,9 @@
   "name": "framework7-plugin-keypad",
   "version": "3.0.0",
   "description": "Keypad plugin extends Framework7 with additional custom keyboards",
-  "main": "dist/framework7.keypad.js",
-  "jsnext:main": "dist/framework7.keypad.esm.js",
-  "module": "dist/framework7.keypad.esm.js",
+  "main": "dist/framework7-keypad.js",
+  "jsnext:main": "dist/framework7-keypad.esm.js",
+  "module": "dist/framework7-keypad.esm.js",
   "scripts": {
     "copy-f7": "cpy node_modules/framework7/js/*.* demo/framework7/js && cpy node_modules/framework7/css/*.* demo/framework7/css",
     "build:dev": "cross-env NODE_ENV=development gulp build",
