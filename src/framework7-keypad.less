@@ -1,4 +1,23 @@
 @import url('mixins.less');
+
+:root {
+  --f7-keypad-button-bg-color: #fcfcfd;
+  --f7-keypad-button-text-color: #000;
+  --f7-keypad-button-border-color: rgba(0,0,0,0.1);
+  --f7-keypad-button-pressed-bg-color: #bcc0c5;
+  --f7-keypad-button-dark-bg-color: #ddd;
+  --f7-keypad-button-dark-pressed-bg-color: #fcfcfd;
+
+  --f7-keypad-button-number-font-size: 28px;
+  --f7-keypad-button-number-letters-size: 11px;
+
+  --f7-keypad-calc-button-text-color: #fff;
+  --f7-keypad-calc-button-bg-color: #ff9500;
+  --f7-keypad-calc-button-pressed-bg-color: #e0750e;
+  --f7-keypad-calc-button-active-border-color: rgba(0,0,0,0.4);
+  --f7-keypad-calc-button-active-border-width: 1px;
+}
+
 .keypad-popover {
   width: 300px;
   .keypad {
@@ -7,26 +26,19 @@
   .ios & {
     .toolbar {
       background: none;
-      .hairline-remove(top);
-      .hairline(bottom, rgba(0,0,0,0.1));
     }
-    .keypad-buttons {
-      overflow: hidden;
-      border-radius: 13px 13px 13px 13px;
-    }
-    .toolbar ~ .keypad-buttons {
-      border-radius: 0 0 13px 13px;
-    }
+  }
+  .keypad-buttons {
+    overflow: hidden;
+    border-radius: var(--f7-popover-border-radius);
+  }
+  .toolbar ~ .keypad-buttons {
+    border-radius: 0 0 var(--f7-popover-border-radius) var(--f7-popover-border-radius);
   }
 }
 .keypad-sheet {
   @media (orientation: landscape) and (max-height: 415px) {
     height: 200px;
-  }
-  .ios & {
-    .sheet-modal-inner {
-      .hairline(top, rgba(184/2, 188/2, 192/2, 0.35));
-    }
   }
 }
 .keypad-inline {
@@ -40,12 +52,7 @@
     height: 100%;
   }
   .toolbar ~ .keypad-buttons {
-    .md & {
-      height: ~"calc(100% - 48px)";
-    }
-    .ios & {
-      height: ~"calc(100% - 44px)";
-    }
+    height: calc(100% - var(--f7-toolbar-height));
   }
 }
 i.icon-keypad-delete {
@@ -55,37 +62,38 @@ i.icon-keypad-delete {
   background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 16'><path d='M18,0h-8C8.9,0,7.9,0.5,7.1,1.2c0,0,0,0,0,0L1,7.2C0.6,7.7,0.6,8.4,1,8.8l4.9,4.7L7,14.6c0,0,0,0,0,0c0.7,0.9,1.8,1.4,3,1.4 h8c2.2,0,4-1.8,4-4V4C22,1.8,20.2,0,18,0z M17.3,11.2l-0.7,0.7l-3.2-3.2l-3.2,3.2l-0.7-0.7L12.8,8L9.6,4.8l0.7-0.7l3.2,3.2l3.2-3.2 l0.7,0.7L14.2,8L17.3,11.2z' fill='%23000000'/></svg>");
 }
 .keypad-buttons {
-  color: #000;
+  color: var(--f7-keypad-button-text-color);
   display: flex;
   flex-wrap: wrap;
 }
 .keypad-button {
-  background: #fcfcfd;
+  background: var(--f7-keypad-button-bg-color);
   position: relative;
   text-align: center;
   cursor: pointer;
   width: 100% / 3;
-  width: ~"calc(100% / 3)";
+  width: calc(100% / 3);
   height: 25%;
-  .hairline(right, rgba(0,0,0,0.1));
-  .hairline(top, rgba(0,0,0,0.1));
+  .hairline(right, var(--f7-keypad-button-border-color));
+  .hairline(top, var(--f7-keypad-button-border-color));
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  user-select: none;
   &:not(.keypad-dummy-button) {
     &.active-state {
-      background: #bcc0c5;
+      background: var(--f7-keypad-button-pressed-bg-color);
     }
   }
 
 
   &.keypad-button-dark {
-    background: #ddd;
+    background: var(--f7-keypad-button-dark-bg-color);
     &:not(.keypad-dummy-button) {
       &.active-state {
-        background: #fcfcfd;
+        background: var(--f7-keypad-button-dark-pressed-bg-color);
       }
     }
   }
@@ -102,14 +110,12 @@ i.icon-keypad-delete {
     }
     &.keypad-button-double {
       width: 100% / 3 * 2;
-      width: ~"-webkit-calc(100% / 3 * 2)";
-      width: ~"calc(100% / 3 * 2)";
+      width: calc(100% / 3 * 2);
     }
   }
   .keypad-type-calculator & {
     width: 25%;
     height: 20%;
-    font-weight: 300;
     &:nth-child(4n) {
       .hairline-remove(right);
     }
@@ -121,32 +127,34 @@ i.icon-keypad-delete {
     }
   }
   &.calc-operator-button {
-    color:#fff;
-    background: #ff9500;
+    color: var(--f7-keypad-calc-button-text-color);
+    background: var(--f7-keypad-calc-button-bg-color);
     &.active-state {
-      background: #e0750e;
+      background: var(--f7-keypad-calc-button-pressed-bg-color);
     }
     &.calc-operator-active {
-      border: 1px solid rgba(0,0,0,0.4);
+      border: var(--f7-keypad-calc-button-active-border-width) solid var(--f7-keypad-calc-button-active-border-color);
     }
   }
 }
 
-.keypad-button-number, .keypad-button-letters {
+.keypad-button-number,
+.keypad-button-letters {
   display: block;
 }
 .keypad-button-number {
-  font-size: 28px;
+  font-size: var(--f7-keypad-button-number-font-size);
   line-height: 1;
 }
 .keypad-button-letters {
-  font-size: 11px;
+  font-size: var(--f7-keypad-button-letters-font-size);
   line-height: 15px;
   height: 15px;
 }
 
 .list {
-  input[type="numpad"], input[type="calculator"] {
+  input[type="numpad"],
+  input[type="calculator"] {
     appearance: none;
     box-sizing: border-box;
     border: none;
@@ -157,15 +165,9 @@ i.icon-keypad-delete {
     padding: 0;
     margin: 0;
     width: 100%;
-    color: #000;
+    color: var(--f7-input-text-color);
     font-family: inherit;
-    .ios & {
-      height: 44px;
-      font-size: 17px;
-    }
-    .md & {
-      height: 36px;
-      font-size: 16px;
-    }
+    height: var(--f7-input-height);;
+    font-size: var(--f7-input-font-size);;
   }
 }
