@@ -12,6 +12,7 @@ export default {
     keypad: {
       type: 'numpad', // or 'calculator' or 'custom',
       openIn: 'auto', // or 'popover' or 'sheet'
+      backdrop: undefined,
       inputEl: null,
       containerEl: null,
       value: null,
