@@ -1,13 +1,84 @@
-<div class="page no-swipeback" data-page="passcode">
-  <div class="page-content login-screen-content">
-    <div class="login-screen-title">Ented Passcode</div>
-    <form>
-      <div class="block passcode-input">
-        <input type="text" value="____" id="demo-numpad-inline">
-      </div>
-      <div class="block block-strong no-padding no-margin passcode-numpad">
-        <div id="numpad-inline-container"></div>
-      </div>
-    </form>
+<template>
+  <div class="page no-swipeback">
+    <div class="page-content login-screen-content">
+      <div class="login-screen-title">Ented Passcode</div>
+      <form>
+        <div class="block passcode-input">
+          <input type="text" value="____" id="demo-numpad-inline">
+        </div>
+        <div class="block block-strong no-padding no-margin passcode-numpad">
+          <div id="numpad-inline-container"></div>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+</template>
+<style>
+  .block.passcode-input {
+    position: relative;
+    z-index: 5;
+  }
+  .block.passcode-numpad {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 0;
+    max-width: none;
+    z-index: 10;
+  }
+  #demo-numpad-inline {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    border: none;
+    background: none;
+    border-radius: 0 0 0 0;
+    box-shadow: none;
+    display: block;
+    padding: 0 0 0 5px;
+    margin: 0;
+    width: 100%;
+    height: 43px;
+    color: #000;
+    font-size: 17px;
+    font-family: inherit;
+    letter-spacing: 5px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 300;
+  }
+</style>
+<script>
+  return {
+    on: {
+      pageInit() {
+        var app = this.$f7;
+        var numpadInline = app.keypad.create({
+          inputEl: '#demo-numpad-inline',
+          containerEl: '#numpad-inline-container',
+          toolbar: false,
+          valueMaxLength: 4,
+          dotButton: false,
+          formatValue: function (value) {
+            value = value.toString();
+            return ('****').substring(0, value.length) + ('____').substring(0, 4 - value.length);
+          },
+          on: {
+            change(keypad, value) {
+              console.log(keypad, value);
+              value = value.toString();
+              if (value.length === 4) {
+                app.dialog.alert('Thank you! Your passcode is<br><b>' + value + '</b>', function () {
+                  app.views.main.router.back();
+                });
+              }
+            }
+          }
+        });
+      },
+    }
+  }
+</script>

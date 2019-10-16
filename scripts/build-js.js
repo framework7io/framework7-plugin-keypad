@@ -3,135 +3,100 @@
 /* eslint import/no-unresolved: "off" */
 /* eslint global-require: "off" */
 /* eslint no-param-reassign: ["error", { "props": false }] */
-
-const gulp = require('gulp');
-const rollup = require('rollup-stream');
+const fs = require('fs');
+const rollup = require('rollup');
 const buble = require('rollup-plugin-buble');
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
 const replace = require('rollup-plugin-replace');
 const resolve = require('rollup-plugin-node-resolve');
-const header = require('gulp-header');
-const uglify = require('gulp-uglify');
-const sourcemaps = require('gulp-sourcemaps');
-const rename = require('gulp-rename');
-const gulpif = require('gulp-if');
 const commonjs = require('rollup-plugin-commonjs');
+const Terser = require('terser');
 const banner = require('./banner.js');
 
 let cache;
 
-function es(cb) {
+async function es() {
   const env = process.env.NODE_ENV || 'development';
-  const target = process.env.TARGET || 'universal';
   const format = 'es';
-  let cbs = 0;
 
-  rollup({
-    input: './src/framework7.keypad.js',
+  return rollup.rollup({
+    input: './src/framework7-keypad.js',
+    cache,
     plugins: [
       replace({
         delimiters: ['', ''],
         'process.env.NODE_ENV': JSON.stringify(env), // or 'production'
-        'process.env.TARGET': JSON.stringify(target),
         'process.env.FORMAT': JSON.stringify(format),
       }),
-      resolve({ jsnext: true }),
+      resolve({ mainFields: ['module', 'main', 'jsnext'] }),
       commonjs(),
     ],
-    format: 'es',
-    name: 'Framework7Keypad',
-    strict: true,
-    sourcemap: false,
-    banner,
-  })
-    .on('error', (err) => {
-      if (cb) cb();
-      console.log(err.toString());
-    })
-    .pipe(source('framework7.keypad.js', './src'))
-    .pipe(buffer())
-    .pipe(rename('framework7.keypad.esm.js'))
-    .pipe(gulp.dest(`./${env === 'development' ? 'build' : 'dist'}/`))
-    .on('end', () => {
-      cbs += 1;
-      if (cbs === 2 && cb) cb();
+  }).then((bundle) => {
+    cache = bundle;
+    return bundle.write({
+      format: 'es',
+      file: `./${env === 'development' ? 'build' : 'dist'}/framework7-keypad.esm.js`,
+      name: 'Framework7Keypad',
+      strict: true,
+      sourcemap: false,
+      banner,
     });
+  });
 }
-function umd(cb) {
+
+async function umd() {
   const env = process.env.NODE_ENV || 'development';
-  const target = process.env.TARGET || 'universal';
   const format = process.env.FORMAT || 'umd';
 
-  rollup({
-    input: './src/framework7.keypad.js',
+  return rollup.rollup({
+    input: './src/framework7-keypad.js',
+    cache,
     plugins: [
       replace({
         delimiters: ['', ''],
         'process.env.NODE_ENV': JSON.stringify(env), // or 'production'
-        'process.env.TARGET': JSON.stringify(target),
         'process.env.FORMAT': JSON.stringify(format),
       }),
-      resolve({ jsnext: true }),
+      resolve({ mainFields: ['module', 'main', 'jsnext'] }),
       commonjs(),
       buble(),
     ],
-    format: 'umd',
-    name: 'Framework7Keypad',
-    strict: true,
-    sourcemap: env === 'development',
-    banner,
-    cache,
-  })
-    .on('error', (err) => {
-      if (cb) cb();
-      console.log(err.toString());
-    })
-    .on('bundle', (bundle) => {
-      cache = bundle;
-    })
-    .pipe(source('framework7.keypad.js', './src'))
-    .pipe(buffer())
-    .pipe(gulpif(env === 'development', sourcemaps.init({ loadMaps: true })))
-    .pipe(gulpif(env === 'development', sourcemaps.write('./')))
-    .pipe(gulp.dest(`./${env === 'development' ? 'build' : 'dist'}/`))
-    .on('end', () => {
-      if (env === 'development') {
-        if (cb) cb();
-        return;
-      }
-      // Minified version
-      gulp.src('./dist/framework7.keypad.js')
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(header(banner))
-        .pipe(rename((filePath) => {
-          filePath.basename += '.min';
-        }))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./dist'))
-        .on('end', () => {
-          cb();
-        });
+  }).then((bundle) => {
+    cache = bundle;
+    return bundle.write({
+      format: 'umd',
+      file: `./${env === 'development' ? 'build' : 'dist'}/framework7-keypad.js`,
+      name: 'Framework7Keypad',
+      strict: true,
+      sourcemap: false,
+      banner,
     });
+  }).then((bundle) => {
+    if (env === 'development') {
+      return;
+    }
+    const result = bundle.output[0];
+    const minified = Terser.minify(result.code, {
+      sourceMap: {
+        content: env === 'development' ? result.map : undefined,
+        filename: env === 'development' ? undefined : 'framework7-keypad.min.js',
+        url: 'framework7-keypad.min.js.map',
+      },
+      output: {
+        preamble: banner,
+      },
+    });
+
+    fs.writeFileSync('./dist/framework7-keypad.min.js', minified.code);
+    fs.writeFileSync('./dist/framework7-keypad.min.js.map', minified.map);
+  });
 }
-function buildJs(cb) {
+async function buildJs() {
   const env = process.env.NODE_ENV || 'development';
 
-  const expectCbs = env === 'development' ? 1 : 2;
-  let cbs = 0;
-
-  umd(() => {
-    cbs += 1;
-    if (cbs === expectCbs) cb();
-
-    if (env === 'production') {
-      es(() => {
-        cbs += 1;
-        if (cbs === expectCbs) cb();
-      });
-    }
-  });
+  await umd();
+  if (env === 'prduction') {
+    await es();
+  }
 }
 
 module.exports = buildJs;

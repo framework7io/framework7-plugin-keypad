@@ -244,49 +244,100 @@ export default function (Framework7Class) {
         },
       });
 
+      function onButtonClick($buttonEl) {
+        if ($buttonEl.length === 0) return;
+        const button = keypad.params.buttons[$buttonEl.index()];
+        let buttonValue = button.value;
+        let currentValue = keypad.value;
+
+        if (keypad.params.type === 'numpad') {
+          if (typeof currentValue === 'undefined') currentValue = '';
+          if ($buttonEl.hasClass('keypad-delete-button')) {
+            currentValue = currentValue.substring(0, currentValue.length - 1);
+          } else if (typeof buttonValue !== 'undefined') {
+            if (buttonValue === '.' && currentValue.indexOf('.') >= 0) {
+              buttonValue = '';
+            }
+            currentValue += buttonValue;
+          }
+          if (typeof currentValue !== 'undefined') keypad.setValue(currentValue);
+        }
+        if (keypad.params.type === 'calculator') {
+          keypad.calculator(button.value);
+          const $buttonsEl = keypad.$el.find('.keypad-buttons');
+          $buttonsEl.find('.calc-operator-active').removeClass('calc-operator-active');
+          if ($buttonEl.hasClass('calc-operator-button') && !$buttonEl.hasClass('calc-operator-button-equal')) {
+            $buttonEl.addClass('calc-operator-active');
+          }
+        }
+        keypad.emit('local::buttonClick keypadButtonClick', keypad, button);
+        if (button.onClick) {
+          button.onClick(keypad, button);
+        }
+      }
+      function handleClick(e) {
+        const $buttonEl = $(e.target).closest('.keypad-button');
+        if (!$buttonEl.length) return;
+        onButtonClick($buttonEl);
+      }
+
+      let $touchedButtonEl;
+      let touchStarted;
+      let touchMoved;
+      let touchStartX;
+      let touchStartY;
+      const maxTouchDistance = 10;
+
+      function handleTouchStart(e) {
+        if (touchStarted || touchMoved) return;
+        const $buttonEl = $(e.target).closest('.keypad-button');
+        if (!$buttonEl.length) {
+          return;
+        }
+        $touchedButtonEl = $buttonEl;
+        touchStarted = true;
+        touchStartX = e.targetTouches[0].pageX;
+        touchStartY = e.targetTouches[0].pageY;
+      }
+      function handleTouchMove(e) {
+        if (!touchStarted) return;
+        const pageX = (e.targetTouches[0] || e.changedTouches[0]).pageX;
+        const pageY = (e.targetTouches[0] || e.changedTouches[0]).pageY;
+        if (Math.abs(pageX - touchStartX) > maxTouchDistance || Math.abs(pageY - touchStartY) > maxTouchDistance) {
+          touchMoved = true;
+        }
+      }
+      function handleTouchEnd() {
+        if (!touchStarted) return;
+        if (touchMoved) {
+          touchStarted = false;
+          touchMoved = false;
+          return;
+        }
+        touchStarted = false;
+        touchMoved = false;
+        onButtonClick($touchedButtonEl);
+      }
 
       keypad.attachKeypadEvents = function attachKeypadEvents() {
         const $buttonsEl = keypad.$el.find('.keypad-buttons');
 
-        function handleClick(e) {
-          let $buttonEl = $(e.target);
-          if (!$buttonEl.hasClass('keypad-button')) {
-            $buttonEl = $buttonEl.parents('.keypad-button');
-          }
-          if ($buttonEl.length === 0) return;
-          const button = keypad.params.buttons[$buttonEl.index()];
-          let buttonValue = button.value;
-          let currentValue = keypad.value;
-
-          if (keypad.params.type === 'numpad') {
-            if (typeof currentValue === 'undefined') currentValue = '';
-            if ($buttonEl.hasClass('keypad-delete-button')) {
-              currentValue = currentValue.substring(0, currentValue.length - 1);
-            } else if (typeof buttonValue !== 'undefined') {
-              if (buttonValue === '.' && currentValue.indexOf('.') >= 0) {
-                buttonValue = '';
-              }
-              currentValue += buttonValue;
-            }
-            if (typeof currentValue !== 'undefined') keypad.setValue(currentValue);
-          }
-          if (keypad.params.type === 'calculator') {
-            keypad.calculator(button.value);
-            $buttonsEl.find('.calc-operator-active').removeClass('calc-operator-active');
-            if ($buttonEl.hasClass('calc-operator-button') && !$buttonEl.hasClass('calc-operator-button-equal')) {
-              $buttonEl.addClass('calc-operator-active');
-            }
-          }
-          keypad.emit('local::buttonClick keypadButtonClick', keypad, button);
-          if (button.onClick) {
-            button.onClick(keypad, button);
-          }
+        if (app.support.touch) {
+          $buttonsEl.on(app.touchEvents.start, handleTouchStart);
+          app.on('touchmove', handleTouchMove);
+          app.on('touchend', handleTouchEnd);
+        } else {
+          $buttonsEl.on('click', handleClick);
         }
 
-        $buttonsEl.on('click', handleClick);
-
         keypad.detachKeypadEvents = function detachKeypadEvents() {
-          $buttonsEl.off('click', handleClick);
+          if (app.support.touch) {
+            $buttonsEl.off(app.touchEvents.start, handleTouchStart);
+            app.off('touchmove', handleTouchMove);
+            app.off('touchend', handleTouchEnd);
+          } else {
+            $buttonsEl.off('click', handleClick);
+          }
         };
       };
 
@@ -301,11 +352,13 @@ export default function (Framework7Class) {
 
       return keypad;
     }
+
     initInput() {
       const keypad = this;
       if (!keypad.$inputEl) return;
       if (keypad.params.inputReadOnly) keypad.$inputEl.prop('readOnly', true);
     }
+
     isPopover() {
       const keypad = this;
       const { app, modal, params } = keypad;
@@ -314,14 +367,16 @@ export default function (Framework7Class) {
 
       if (!keypad.inline && keypad.inputEl) {
         if (params.openIn === 'popover') return true;
-        else if (app.device.ios) {
+        if (app.device.ios) {
           return !!app.device.ipad;
-        } else if (app.width >= 768) {
+        }
+        if (app.width >= 768) {
           return true;
         }
       }
       return false;
     }
+
     calculator(value) {
       const keypad = this;
       const operators = ('+ - = × ÷ ± %').split(' ');
@@ -421,19 +476,23 @@ export default function (Framework7Class) {
       }
       if (value !== invert && value !== perc) keypad.calcValues.push(value);
     }
+
     formatValue(value) {
       const keypad = this;
       if (keypad.params.formatValue) return keypad.params.formatValue.call(keypad, value);
       return value;
     }
+
     setValue(value) {
       const keypad = this;
       keypad.updateValue(value);
     }
+
     getValue() {
       const keypad = this;
       return keypad.value;
     }
+
     updateValue(newValue) {
       const keypad = this;
       keypad.value = newValue;
@@ -446,6 +505,7 @@ export default function (Framework7Class) {
         keypad.$inputEl.trigger('change');
       }
     }
+
     renderButtons() {
       const keypad = this;
       let buttonsHTML = '';
@@ -460,6 +520,7 @@ export default function (Framework7Class) {
       }
       return buttonsHTML;
     }
+
     renderToolbar() {
       const keypad = this;
       if (keypad.params.renderToolbar) return keypad.params.renderToolbar.call(keypad, keypad);
@@ -476,6 +537,7 @@ export default function (Framework7Class) {
       `;
       return toolbarHtml.trim();
     }
+
     renderSheet() {
       const keypad = this;
       if (keypad.params.renderSheet) return keypad.params.renderSheet.call(keypad, keypad);
@@ -492,6 +554,7 @@ export default function (Framework7Class) {
 
       return sheetHtml;
     }
+
     renderPopover() {
       const keypad = this;
       if (keypad.params.renderPopover) return keypad.params.renderPopover.call(keypad, keypad);
@@ -511,6 +574,7 @@ export default function (Framework7Class) {
 
       return popoverHtml;
     }
+
     renderInline() {
       const keypad = this;
       if (keypad.params.renderInline) return keypad.params.renderInline.call(keypad, keypad);
@@ -527,6 +591,7 @@ export default function (Framework7Class) {
 
       return inlineHtml;
     }
+
     render() {
       const keypad = this;
       const { params } = keypad;
@@ -536,7 +601,7 @@ export default function (Framework7Class) {
         if (modalType === 'auto') modalType = keypad.isPopover() ? 'popover' : 'sheet';
 
         if (modalType === 'popover') return keypad.renderPopover();
-        else if (modalType === 'sheet') return keypad.renderSheet();
+        if (modalType === 'sheet') return keypad.renderSheet();
       }
       return keypad.renderInline();
     }
@@ -575,6 +640,7 @@ export default function (Framework7Class) {
       }
       keypad.emit('local::open keypadOpen', keypad);
     }
+
     onOpened() {
       const keypad = this;
       if (keypad.$el) {
@@ -585,6 +651,7 @@ export default function (Framework7Class) {
       }
       keypad.emit('local::opened keypadOpened', keypad);
     }
+
     onClose() {
       const keypad = this;
       const app = keypad.app;
@@ -604,6 +671,7 @@ export default function (Framework7Class) {
       }
       keypad.emit('local::close keypadClose', keypad);
     }
+
     onClosed() {
       const keypad = this;
       keypad.opened = false;
@@ -626,6 +694,7 @@ export default function (Framework7Class) {
       }
       keypad.emit('local::closed keypadClosed', keypad);
     }
+
     open() {
       const keypad = this;
       const { app, opened, inline, $inputEl, params } = keypad;
@@ -649,7 +718,7 @@ export default function (Framework7Class) {
         targetEl: $inputEl,
         scrollToEl: keypad.params.scrollToInput ? $inputEl : undefined,
         content: modalContent,
-        backdrop: modalType !== 'sheet',
+        backdrop: typeof keypad.params.backdrop === 'undefined' ? modalType !== 'sheet' : keypad.params.backdrop,
         on: {
           open() {
             const modal = this;
@@ -676,6 +745,7 @@ export default function (Framework7Class) {
         keypad.modal.open();
       }
     }
+
     close() {
       const keypad = this;
       const { opened, inline } = keypad;
@@ -691,6 +761,7 @@ export default function (Framework7Class) {
         keypad.modal.close();
       }
     }
+
     init() {
       const keypad = this;
       keypad.initInput();
@@ -714,6 +785,7 @@ export default function (Framework7Class) {
       }
       keypad.emit('local::init keypadInit', keypad);
     }
+
     destroy() {
       const keypad = this;
       if (keypad.destroyed) return;
