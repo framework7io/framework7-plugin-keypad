@@ -1,6 +1,12 @@
 @import url('mixins.less');
 
 :root {
+  --f7-keypad-height: 260px;
+  --f7-keypad-landscape-height: 200px;
+  --f7-keypad-inline-height: 200px;
+  --f7-keypad-inline-calc-height: 260px;
+  --f7-keypad-popover-width: 300px;
+
   --f7-keypad-button-bg-color: #fcfcfd;
   --f7-keypad-button-text-color: #000;
   --f7-keypad-button-border-color: rgba(0,0,0,0.1);
@@ -19,9 +25,9 @@
 }
 
 .keypad-popover {
-  width: 300px;
+  width: var(--f7-keypad-popover-width);
   .keypad {
-    height: 260px;
+    height: var(--f7-keypad-height);
   }
   .ios & {
     .toolbar {
@@ -37,14 +43,16 @@
   }
 }
 .keypad-sheet {
+  padding-bottom: var(--f7-safe-area-bottom);
+  height: calc(var(--f7-safe-area-bottom) + var(--f7-keypad-height));
   @media (orientation: landscape) and (max-height: 415px) {
-    height: 200px;
+    height: var(--f7-keypad-landscape-height);
   }
 }
 .keypad-inline {
-  height: 200px;
+  height: var(--f7-keypad-inline-height);
   &.keypad-type-calculator {
-    height: 260px;
+    height: var(--f7-keypad-inline-calc-height);
   }
 }
 .keypad-inline, .keypad-popover .keypad {
