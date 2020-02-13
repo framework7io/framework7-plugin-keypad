@@ -498,11 +498,12 @@ export default function (Framework7Class) {
       keypad.value = newValue;
       if (keypad.params.valueMaxLength && keypad.value.length > keypad.params.valueMaxLength) {
         keypad.value = keypad.value.substring(0, keypad.params.valueMaxLength);
-      }
-      keypad.emit('local::change keypadChange', keypad, keypad.value);
-      if (keypad.$inputEl && keypad.$inputEl.length > 0) {
-        keypad.$inputEl.val(keypad.formatValue(keypad.value));
-        keypad.$inputEl.trigger('change');
+      } else {
+        keypad.emit('local::change keypadChange', keypad, keypad.value);
+        if (keypad.$inputEl && keypad.$inputEl.length > 0) {
+          keypad.$inputEl.val(keypad.formatValue(keypad.value));
+          keypad.$inputEl.trigger('change');
+        }
       }
     }
 
