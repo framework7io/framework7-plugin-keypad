@@ -185,7 +185,7 @@ Let's look on list of all available parameters:
     <tr>
       <td>type</td>
       <td>string</td>
-      <td>numbad</td>
+      <td>numpad</td>
       <td>Keypad type, could be 'numpad', 'calculator' or 'custom'</td>
     </tr>
     <tr>
