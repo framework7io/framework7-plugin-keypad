@@ -45,26 +45,26 @@
     "node": ">= 0.10.0"
   },
   "devDependencies": {
-    "acorn": "^7.1.0",
+    "acorn": "^7.2.0",
     "cpy-cli": "^2.0.0",
     "cross-env": "^6.0.3",
-    "eslint": "^6.5.1",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "framework7": "^5.0.5",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.21.1",
+    "framework7": "^5.7.7",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
-    "gulp-clean-css": "^4.2.0",
+    "gulp-clean-css": "^4.3.0",
     "gulp-connect": "^5.7.0",
     "gulp-header": "^2.0.9",
     "gulp-less": "^4.0.1",
     "gulp-open": "^3.0.1",
     "gulp-rename": "^1.4.0",
-    "rollup": "^1.24.0",
+    "rollup": "^1.32.1",
     "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
-    "terser": "^4.3.9"
+    "terser": "^4.7.0"
   }
 }

@@ -94,7 +94,7 @@ async function buildJs() {
   const env = process.env.NODE_ENV || 'development';
 
   await umd();
-  if (env === 'prduction') {
+  if (env === 'production') {
     await es();
   }
 }

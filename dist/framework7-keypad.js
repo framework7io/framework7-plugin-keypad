@@ -3,18 +3,18 @@
  * Keypad plugin extends Framework7 with additional custom keyboards
  * http://framework7.io/plugins/
  *
- * Copyright 2014-2019 Vladimir Kharlampidi
+ * Copyright 2014-2020 Vladimir Kharlampidi
  *
  * Released under the MIT License
  *
- * Released on: October 16, 2019
+ * Released on: June 9, 2020
  */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.Framework7Keypad = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
   function KeypadClassConstructor (Framework7Class) {
     return /*@__PURE__*/(function (Framework7Class) {
@@ -913,4 +913,4 @@
 
   return framework7Keypad;
 
-}));
+})));
