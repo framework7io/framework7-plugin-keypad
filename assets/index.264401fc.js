@@ -84,7 +84,7 @@ const H=function(){const f=document.createElement("link").relList;if(f&&f.suppor
       </div>
     </div>
   </div>
-`}}S.id="6e946cf6da";function $(o,f){const{$on:e,$f7:t}=f;return e("pageInit",()=>{t.keypad.create({inputEl:"#demo-numpad-inline",containerEl:"#numpad-inline-container",toolbar:!1,valueMaxLength:4,dotButton:!1,formatValue:function(a){return a=a.toString(),"****".substring(0,a.length)+"____".substring(0,4-a.length)},on:{change(a,s){console.log(a,s),s=s.toString(),s.length===4&&t.dialog.alert("Thank you! Your passcode is<br><b>"+s+"</b>",function(){t.views.main.router.back()})}}})}),function(a){a.$;var s=a.$h;return a.$root,a.$f7,a.$f7route,a.$f7router,a.$theme,a.$update,a.$store,s`
+`}}S.id="66a956a529";function $(o,f){const{$on:e,$f7:t}=f;return e("pageInit",()=>{t.keypad.create({inputEl:"#demo-numpad-inline",containerEl:"#numpad-inline-container",toolbar:!1,valueMaxLength:4,dotButton:!1,formatValue:function(a){return a=a.toString(),"****".substring(0,a.length)+"____".substring(0,4-a.length)},on:{change(a,s){console.log(a,s),s=s.toString(),s.length===4&&t.dialog.alert("Thank you! Your passcode is<br><b>"+s+"</b>",function(){t.views.main.router.back()})}}})}),function(a){a.$;var s=a.$h;return a.$root,a.$f7,a.$f7route,a.$f7router,a.$theme,a.$update,a.$store,s`
   <div class="page no-swipeback">
     <div class="page-content login-screen-content">
       <div class="login-screen-title">Ented Passcode</div>
@@ -98,7 +98,7 @@ const H=function(){const f=document.createElement("link").relList;if(f&&f.suppor
       </form>
     </div>
   </div>
-`}}$.id="0bcf995735";$.style=`
+`}}$.id="2575963be6";$.style=`
   .block.passcode-input {
     position: relative;
     z-index: 5;
