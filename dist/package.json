@@ -1,6 +1,6 @@
 {
   "name": "framework7-plugin-keypad",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0",
   "description": "Keypad plugin extends Framework7 with additional custom keyboards",
   "main": "framework7-keypad.js",
   "jsnext:main": "framework7-keypad.esm.js",
