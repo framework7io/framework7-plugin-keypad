@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Framework7 Keypad</title>
+  <link rel="stylesheet" href="https://unpkg.com/framework7/framework7-bundle.min.css">
+  <script type="module" crossorigin src="assets/index.96ceb576.js"></script>
+  <link rel="stylesheet" href="assets/index.54e50388.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="view view-main view-init">
+      <div class="page">
+        <div class="navbar">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner sliding">
+            <div class="title">Framework7 Keypad</div>
+          </div>
+        </div>
+        <div class="page-content">
+          <div class="block block-strong">
+            <input type="tel" />
+            <p>Keypad plugin extends Framework7 with additional custom keyboards. By default it comes with predefined
+              <b>Numpad</b> and <b>Calculator</b> keyboards, but it also can be used to create custom keyboards with
+              custom buttons.
+            </p>
+          </div>
+          <div class="block-title">Numpad</div>
+          <div class="list no-hairlines-md">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" placeholder="Enter number" readonly="readonly" id="demo-numpad" />
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="block-title">Limited Value Length</div>
+          <div class="list no-hairlines-md">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" placeholder="Enter your age" readonly="readonly" id="demo-numpad-limited" />
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="block-title">Calculator</div>
+          <div class="list no-hairlines-md">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" placeholder="Enter number" readonly="readonly" id="demo-calculator" />
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="block-title">Mode demos</div>
+          <div class="list">
+            <ul>
+              <li>
+                <a href="/passcode/" class="item-link item-content">
+                  <div class="item-inner">
+                    <div class="item-title">Inline numpad as passcode input</div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/auto-init/" class="item-link item-content">
+                  <div class="item-inner">
+                    <div class="item-title">Automatic initialization</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/framework7/framework7-bundle.min.js"></script>
+  
+
+</body>
+
+</html>
