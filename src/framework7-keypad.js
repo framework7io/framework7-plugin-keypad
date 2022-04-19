@@ -1,4 +1,5 @@
-import KeypadClassConstructor from './keypad-class';
+// eslint-disable-next-line
+import KeypadClassConstructor from './keypad-class.js';
 
 let Keypad;
 export default {
@@ -68,21 +69,26 @@ export default {
     pageInit(page) {
       const $ = page.app.$;
       const app = page.app;
-      page.$el.find('input[type="numpad"], input[type="calculator"]').each((index, inputEl) => {
-        const $inputEl = $(inputEl);
-        const params = {
-          inputEl,
-          type: $inputEl.attr('type'),
-          value: $inputEl.val() || 0,
-        };
-        if ($inputEl.attr('maxlength')) params.valueMaxLength = $inputEl.attr('maxlength');
-        app.keypad.create(app.utils.extend(params, $inputEl.dataset()));
-      });
+      page.$el
+        .find('input[type="numpad"], input[type="calculator"]')
+        .each((inputEl) => {
+          const $inputEl = $(inputEl);
+          const params = {
+            inputEl,
+            type: $inputEl.attr('type'),
+            value: $inputEl.val() || 0,
+          };
+          if ($inputEl.attr('maxlength'))
+            params.valueMaxLength = $inputEl.attr('maxlength');
+          app.keypad.create(app.utils.extend(params, $inputEl.dataset()));
+        });
     },
     pageBeforeRemove(page) {
-      page.$el.find('input[type="numpad"], input[type="calculator"]').each((index, inputEl) => {
-        page.app.keypad.destroy(inputEl);
-      });
+      page.$el
+        .find('input[type="numpad"], input[type="calculator"]')
+        .each((inputEl) => {
+          page.app.keypad.destroy(inputEl);
+        });
     },
   },
 };

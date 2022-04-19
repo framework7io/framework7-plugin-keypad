@@ -4,7 +4,7 @@
       <div class="login-screen-title">Ented Passcode</div>
       <form>
         <div class="block passcode-input">
-          <input type="text" value="____" id="demo-numpad-inline">
+          <input type="text" value="____" id="demo-numpad-inline" />
         </div>
         <div class="block block-strong no-padding no-margin passcode-numpad">
           <div id="numpad-inline-container"></div>
@@ -18,6 +18,7 @@
     position: relative;
     z-index: 5;
   }
+
   .block.passcode-numpad {
     position: absolute;
     left: 0;
@@ -27,6 +28,7 @@
     max-width: none;
     z-index: 10;
   }
+
   #demo-numpad-inline {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -51,33 +53,33 @@
   }
 </style>
 <script>
-  return {
-    on: {
-      pageInit() {
-        var app = this.$f7;
-        var numpadInline = app.keypad.create({
-          inputEl: '#demo-numpad-inline',
-          containerEl: '#numpad-inline-container',
-          toolbar: false,
-          valueMaxLength: 4,
-          dotButton: false,
-          formatValue: function (value) {
+  export default (props, ctx) => {
+    const { $on, $f7 } = ctx;
+    $on('pageInit', () => {
+      var numpadInline = $f7.keypad.create({
+        inputEl: '#demo-numpad-inline',
+        containerEl: '#numpad-inline-container',
+        toolbar: false,
+        valueMaxLength: 4,
+        dotButton: false,
+        formatValue: function (value) {
+          value = value.toString();
+          return ('****').substring(0, value.length) + ('____').substring(0, 4 - value.length);
+        },
+        on: {
+          change(keypad, value) {
+            console.log(keypad, value);
             value = value.toString();
-            return ('****').substring(0, value.length) + ('____').substring(0, 4 - value.length);
-          },
-          on: {
-            change(keypad, value) {
-              console.log(keypad, value);
-              value = value.toString();
-              if (value.length === 4) {
-                app.dialog.alert('Thank you! Your passcode is<br><b>' + value + '</b>', function () {
-                  app.views.main.router.back();
-                });
-              }
+            if (value.length === 4) {
+              $f7.dialog.alert('Thank you! Your passcode is<br><b>' + value + '</b>', function () {
+                $f7.views.main.router.back();
+              });
             }
           }
-        });
-      },
-    }
+        }
+      });
+    })
+
+    return $render;
   }
 </script>

@@ -1,0 +1,43 @@
+{
+  "name": "framework7-plugin-keypad",
+  "version": "7.0.0-beta.1",
+  "description": "Keypad plugin extends Framework7 with additional custom keyboards",
+  "main": "framework7-keypad.js",
+  "jsnext:main": "framework7-keypad.esm.js",
+  "module": "framework7-keypad.esm.js",
+  "type": "module",
+  "exports": {
+    ".": "./framework7-keypad.esm.js",
+    "./css": "./framework7-keypad.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/framework7io/framework7-plugin-keypad.git"
+  },
+  "keywords": [
+    "mobile",
+    "framework",
+    "ios 7",
+    "ios7",
+    "ios8",
+    "ios 8",
+    "iphone",
+    "ipad",
+    "apple",
+    "phonegap",
+    "native",
+    "touch",
+    "appstore",
+    "app",
+    "f7"
+  ],
+  "author": "Vladimir Kharlampidi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/framework7io/framework7-plugin-keypad/issues"
+  },
+  "homepage": "http://framework7.io/plugins/",
+  "engines": {
+    "node": ">= 0.10.0"
+  }
+}
