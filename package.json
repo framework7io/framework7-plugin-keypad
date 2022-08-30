@@ -71,6 +71,6 @@
     "rollup": "^2.70.2",
     "rollup-plugin-framework7": "^1.2.1",
     "terser": "^5.12.1",
-    "vite": "^2.5.7"
+    "vite": "^2.9.13"
   }
 }
